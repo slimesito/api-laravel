@@ -10,7 +10,11 @@ use Tymon\JWTAuth\Contracts\JWTSubject;
 
 class Author extends Model
 {
-    protected $fillable = ['first_name', 'last_name', 'books_count'];
+    protected $fillable = [
+        'first_name',
+        'last_name',
+        'books_count'
+    ];
 
     public function books()
     {
