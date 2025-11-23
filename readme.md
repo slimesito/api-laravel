@@ -1,6 +1,12 @@
-# API RESTful - Laravel 5.8 (Legacy) con Docker
+# Prueba Técnica API RESTful - Laravel 5.8
 
-API para la gestión de **autores** y **libros** construida con **Laravel 5.8**, contenerizada con Docker, con colas asíncronas y autenticación **JWT**.
+API RESTful para la gestión de **Autores** y **Libros** construida con **Laravel 5.8** y base de datos **SQLite**.
+
+El proyecto está contenerizado con Docker e implementa prácticas modernas de Desarrollo Backend:
+- Autenticación **JWT** para seguridad.
+- Colas Asíncronas (Queues) para procesos en segundo plano.
+- FormRequests para validaciones estrictas y desacopladas.
+- API Resources para la transformación y estandarización de respuestas JSON.
 
 ---
 
@@ -105,6 +111,5 @@ docker compose exec app composer dump-autoload
 
 ---
 
-## 📄 Licencia
-MIT (modificable según el proyecto).
+## 💻 Desarrollado por William Villegas
 
