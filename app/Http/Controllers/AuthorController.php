@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Author;
 use Illuminate\Http\Request;
-use App\Http\Requests\StoreAuthorRequest; // Importamos el Request
+use App\Http\Requests\StoreAuthorRequest;
+use App\Http\Resources\AuthorResource; // <-- Importamos el Resource
 use App\Exports\AuthorsExport;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -17,41 +18,55 @@ class AuthorController extends Controller
 
     public function index()
     {
-        return response()->json(Author::all(), 200);
+        // Usamos collection para listas
+        // No cargamos 'books' aquí para mantener la lista ligera
+        return AuthorResource::collection(Author::all());
     }
 
-    // Inyectamos StoreAuthorRequest en lugar de Request
     public function store(StoreAuthorRequest $request)
     {
-        // Si llegamos aquí, los datos ya son válidos.
-        // Usamos $request->validated() para obtener solo los campos validados y limpios.
         $author = Author::create($request->validated());
-
-        return response()->json($author, 201);
+        
+        // Devolvemos el recurso individual
+        return new AuthorResource($author);
     }
 
     public function show($id)
     {
+        // Aquí SÍ cargamos la relación 'books' porque estamos viendo el detalle
         $author = Author::with('books')->find($id);
-        if (!$author) return response()->json(['message' => 'Author not found'], 404);
-        return response()->json($author, 200);
+
+        if (!$author) {
+            return response()->json(['message' => 'Author not found'], 404);
+        }
+
+        // El Resource detectará automáticamente que 'books' está cargado y lo incluirá
+        return new AuthorResource($author);
     }
 
     public function update(Request $request, $id)
     {
-        // Nota: Podrías crear un UpdateAuthorRequest similar si quisieras validar aquí también
         $author = Author::find($id);
-        if (!$author) return response()->json(['message' => 'Author not found'], 404);
+
+        if (!$author) {
+            return response()->json(['message' => 'Author not found'], 404);
+        }
 
         $author->update($request->all());
-        return response()->json($author, 200);
+
+        return new AuthorResource($author);
     }
 
     public function destroy($id)
     {
         $author = Author::find($id);
-        if (!$author) return response()->json(['message' => 'Author not found'], 404);
+
+        if (!$author) {
+            return response()->json(['message' => 'Author not found'], 404);
+        }
+
         $author->delete();
+        
         return response()->json(['message' => 'Author deleted'], 200);
     }
 
