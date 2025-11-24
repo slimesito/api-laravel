@@ -73,6 +73,58 @@ docker compose exec app ./vendor/bin/phpunit
 
 ---
 
+## 🧪 Ejemplos de Uso (cURL)
+
+Puedes copiar y pegar estos comandos en la terminal. Nota: Reemplaza <TU_TOKEN> con el token que reciba al registrarse o iniciar sesión.
+
+**1. Registro (Obtiene Token Automáticamente)**
+
+```bash
+curl -X POST http://localhost:8000/api/auth/register \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{"name": "Usuario Test", "email": "test@example.com", "password": "password123"}'
+```
+
+**2. Login (Si ya hay un usuario registrado)**
+
+```bash
+curl -X POST http://localhost:8000/api/auth/login \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{"email": "test@example.com", "password": "password123"}'
+```
+
+**3. Crear Autor (Requiere Token)**
+
+```bash
+curl -X POST http://localhost:8000/api/authors \
+  -H "Authorization: Bearer <TU_TOKEN>" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{"first_name": "Stephen", "last_name": "King"}'
+```
+
+**4. Crear Libro (Dispara Job Asíncrono)**
+
+```bash
+curl -X POST http://localhost:8000/api/books \
+  -H "Authorization: Bearer <TU_TOKEN>" \
+  -H "Content-Type: application/json" \
+  -H "Accept: application/json" \
+  -d '{"title": "It", "published_date": "1986-09-15", "author_id": 1}'
+```
+
+**5. Listar Autores (Verifica contador actualizado)**
+
+```bash
+curl -X GET http://localhost:8000/api/authors \
+  -H "Authorization: Bearer <TU_TOKEN>" \
+  -H "Accept: application/json"
+```
+
+---
+
 ## 📚 Endpoints Principales
 
 | Grupo | Método | Endpoint | Descripción | Auth |
